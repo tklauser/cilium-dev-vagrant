@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
             end
 
             host.vm.box = "cilium/ubuntu-next"
-            host.vm.box_version = "0"
+            host.vm.box_version = "30"
             host.vm.network "private_network", ip: ip_addr(i)
             host.vm.network "private_network", ip: ip_addr_sec(i)
             host.vm.synced_folder ".", "/vagrant", disabled: true
