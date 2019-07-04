@@ -15,8 +15,6 @@ def hostname(i)
   "cilium#{i}"
 end
 
-#ETC_HOSTS_ENTRIES = (1..N_MACHINES).map { |i| "#{ip_address(i)} #{hostname(i)}\n"}.join('')
-
 Vagrant.configure(2) do |config|
     (1..N_MACHINES).each do |i|
         hostname = hostname(i)
@@ -29,7 +27,7 @@ Vagrant.configure(2) do |config|
             end
 
             host.vm.box = "cilium/ubuntu-next"
-            host.vm.box_version = "30"
+            host.vm.box_version = "31"
             host.vm.network "private_network", ip: ip_addr(i)
             host.vm.network "private_network", ip: ip_addr_sec(i)
             host.vm.synced_folder ".", "/vagrant", disabled: true
