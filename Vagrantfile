@@ -34,4 +34,22 @@ Vagrant.configure(2) do |config|
             host.vm.synced_folder "/home/brb/sandbox/gopath/src/github.com/cilium/cilium", "/cilium", type: "nfs"
         end
     end
+    config.vm.provision "install-k8s", type: "shell", inline:<<-SHELL
+      apt-get update && apt-get install -y git apt-transport-https ca-certificates curl software-properties-common
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+      add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+        $(lsb_release -cs) \
+        stable"
+      apt-get update
+      apt-get install -y docker-ce || true
+      sudo apt-get update && sudo apt-get install -y apt-transport-https curl
+      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+      cat <<FOOBAR | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+FOOBAR
+      sudo apt-get update
+      sudo apt-get install -y kubelet kubeadm kubectl
+      sudo apt-mark hold kubelet kubeadm kubectl
+    SHELL
 end
