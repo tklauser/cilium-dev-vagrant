@@ -19,7 +19,7 @@ Vagrant.configure(2) do |config|
     (1..N_MACHINES).each do |i|
         hostname = hostname(i)
         config.vm.define hostname do |host|
-            host.vm.provider :virtualbox do |vb|
+            host.vm.provider "virtualbox" do |vb|
                 vb.name = hostname
                 vb.memory = 4096
                 vb.customize ["modifyvm", :id, "--natdnshostresolver1", "off"]
@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
             host.vm.network "private_network", ip: ip_addr(i)
             host.vm.network "private_network", ip: ip_addr_sec(i)
             host.vm.synced_folder ".", "/vagrant", disabled: true
-            host.vm.synced_folder "/home/brb/sandbox/gopath/src/github.com/cilium/cilium", "/cilium", type: "nfs"
+            host.vm.synced_folder "/home/brb/sandbox/gopath/src/github.com/cilium/cilium", "/cilium", type: "nfs", nfs_udp: false
         end
     end
     config.vm.provision "shell", path: "install-k8s.sh"
