@@ -32,7 +32,7 @@ Vagrant.configure(2) do |config|
             host.vm.network "private_network", ip: ip_addr(i)
             host.vm.network "private_network", ip: ip_addr_sec(i)
             host.vm.synced_folder ".", "/vagrant", disabled: true
-            host.vm.synced_folder "/home/brb/sandbox/gopath/src/github.com/cilium/cilium", "/cilium", type: "nfs", nfs_udp: false
+            host.vm.synced_folder "/home/tklauser/go/src/github.com/cilium/cilium", "/cilium", type: "nfs", nfs_udp: false
         end
     end
     config.vm.provision "shell", path: "install-k8s.sh"
